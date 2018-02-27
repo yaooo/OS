@@ -72,17 +72,46 @@ int main(int argc, char *argv[]){
 
 
     print_array(num, len);
-    printf("Max=%d\n", max(num, len)); // pass array and len
-    printf("Min=%d\n", min(num, len));
-    printf("Sum=%d\n", sum(num, len));
+    printf("Output file generated for problem 0 part a.\n");
+    
+    FILE *out = fopen("Output_problem0_part_a.txt", "w+");
+    fprintf(out, "hi, i\'m process %d and my parent is %d\n", getpid(), getppid());
+  
+    fprintf(out,"Max=%d\n", max(num, len)); // pass array and len
+    fprintf(out,"Min=%d\n", min(num, len));
+    fprintf(out,"Sum=%d\n", sum(num, len));
+
+    fclose(out);
 
 
 
 
+    int max1, min1, sum1;
+    int count = 0;
+    FILE *out1 = fopen("Output_problem0_part_b.txt", "w+");
+    fprintf(out1, "hi, i\'m process %d and my parent is %d\n", getpid(), getppid());
+  
 
+    max1 = max(num, len);
+    
+    if(fork() == 0){
+        min1 = min(num, len);
+    
+    }
+    
+    if(fork() == 0){
+        sum1 = sum(num, len);
+        count= 3;
+    }
+    
 
-
-
+    fprintf(out1,"hi, i\'m process %d and my parent is %d\n", getpid(), getppid());
+    if(count == 3){
+        fprintf(out1,"Max=%d\n", max1); // pass array and len
+        fprintf(out1,"Min=%d\n", min1);
+        fprintf(out1,"Sum=%d\n", sum1);
+    }
+    fclose(out1);
 
 
 

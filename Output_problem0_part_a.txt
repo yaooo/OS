@@ -1,0 +1,4 @@
+hi, i'm process 4742 and my parent is 2512
+Max=5
+Min=1
+Sum=15

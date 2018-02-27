@@ -1,4 +1,4 @@
-PROGRAMS = first second
+PROGRAMS = Problem0
 
 CC = gcc
 CFLAGS = -Wall

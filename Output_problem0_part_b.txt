@@ -1,0 +1,15 @@
+
+hi, i'm process 4742 and my parent is 2512
+hi, i'm process 4742 and my parent is 2512
+hi, i'm process 4742 and my parent is 2512
+hi, i'm process 4744 and my parent is 4742
+Max=5
+Min=0
+Sum=15
+hi, i'm process 4742 and my parent is 2512
+hi, i'm process 4743 and my parent is 4742
+hi, i'm process 4742 and my parent is 2512
+hi, i'm process 4745 and my parent is 4743
+Max=5
+Min=1
+Sum=15
