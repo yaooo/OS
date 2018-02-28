@@ -15,6 +15,11 @@ int main(){
 	for (int i = 0; i < fileSize; ++i)
 	{
 		randomNumber = rand() % 1000;
+		if (i == fileSize-1)
+		{
+			fprintf(output, "%d", randomNumber);
+			break;
+		}
 		fprintf(output, "%d\n", randomNumber);
 	}
 	return 0;

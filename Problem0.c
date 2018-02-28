@@ -3,14 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 
 int num[200];
-char *name = "Input.txt";
+char *name = "Input.txt";   //we can change this so that it copys the file name of the generated file
 int len = 0;
+clock_t startTime, endTime;
+double elapsedTime;
 
-void print_array(int array[], int len) {
-    // print array on screen
+void print_array(int array[], int len) {    // print array on screen
     int b;
     printf("Array: ");
     for (b = 0; b < len ; b++) {
@@ -20,7 +22,7 @@ void print_array(int array[], int len) {
     
 }
 
-// function
+// min, max, sum functions
 int min(int *x, int len) {
     int mintemp = x[0], i;
     for (i = 1;i < len;i++) {
@@ -48,14 +50,12 @@ int sum(int *z, int len) {
 }
 
 int main(int argc, char *argv[]){
-    //if the file exists
-    if(access(name, F_OK ) != -1){
+    if(access(name, F_OK ) != -1){      //check if the file exists
         FILE *fp = fopen(name,"r");
         // int len = 0;
         while(1) {
-            
             int goodData = fscanf(fp, "%d", &num[len]);
-            len++;
+            len++;  //counts number of elements
             if (feof(fp)){
                 break;
             }
@@ -72,19 +72,20 @@ int main(int argc, char *argv[]){
         return 1;
     }
     
-    
     print_array(num, len);
     printf("Output file generated for problem 0 part a.\n");
     
+    startTime = clock();
     FILE *out = fopen("Output_problem0_part_a.txt", "w+");
     fprintf(out, "hi, i\'m process %d and my parent is %d\n", getpid(), getppid());
-    
     fprintf(out,"Max=%d\n", max(num, len)); // pass array and len
     fprintf(out,"Min=%d\n", min(num, len));
     fprintf(out,"Sum=%d\n", sum(num, len));
     
     fclose(out);
-    
+    endTime = clock();
+    elapsedTime = ((endTime - startTime)/CLOCKS_PER_SEC);
+    printf("%f\n", elapsedTime);
     
     
     

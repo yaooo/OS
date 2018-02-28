@@ -1,6 +1,6 @@
-hi, i'm process 19950 and my parent is 19949
-hi, i'm process 19949 and my parent is 19948
-hi, i'm process 19948 and my parent is 19922
+hi, i'm process 21082 and my parent is 21081
+hi, i'm process 21081 and my parent is 21080
+hi, i'm process 21080 and my parent is 19922
 Max=5
 Min=1
 Sum=15
