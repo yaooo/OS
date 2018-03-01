@@ -7,7 +7,6 @@
 
 
 int num[1000000];
-char *name = "inputRandom1000000.txt";   //we can change this so that it copys the file name of the generated file
 int len = 0;
 clock_t startTime;
 double elapsedTime;
@@ -51,8 +50,13 @@ int sum(int *z, int len) {
 }
 int
  main(int argc, char *argv[]){
-    if(access(name, F_OK ) != -1){      //check if the file exists
-        FILE *fp = fopen(name,"r");
+    char *ip1 = argv[1]; //input = 10 numbers
+    char *ip2 = argv[2]; //input = 100 numbers
+    char *ip3 = argv[3]; //input = 1000 numbers
+    char *ip4 = argv[4]; //input = 10000 numbers
+    char *ip5 = argv[5]; //input = 100000 numbers
+    if(access(ip1, F_OK ) != -1){      //check if the file exists
+        FILE *fp = fopen(ip1,"r");
         // int len = 0;
         while(1) {
             int goodData = fscanf(fp, "%d", &num[len]);
