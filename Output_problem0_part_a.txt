@@ -1,4 +1,4 @@
-hi, i'm process 21080 and my parent is 19922
-Max=5
-Min=1
-Sum=15
+hi, i'm process 22654 and my parent is 19922
+Max=999
+Min=0
+Sum=499740592

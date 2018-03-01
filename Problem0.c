@@ -6,8 +6,8 @@
 #include <time.h>
 
 
-int num[200];
-char *name = "Input.txt";   //we can change this so that it copys the file name of the generated file
+int num[1000000];
+char *name = "inputRandom1000000.txt";   //we can change this so that it copys the file name of the generated file
 int len = 0;
 clock_t startTime, endTime;
 double elapsedTime;
@@ -84,10 +84,8 @@ int main(int argc, char *argv[]){
     
     fclose(out);
     endTime = clock();
-    elapsedTime = ((endTime - startTime)/CLOCKS_PER_SEC);
+    elapsedTime = ((endTime - startTime)); //gives the number of ticks
     printf("%f\n", elapsedTime);
-    
-    
     
     FILE *out1 = fopen("Output_problem0_part_b.txt", "w+");
     
@@ -101,8 +99,6 @@ int main(int argc, char *argv[]){
         write(fd1[1], &min1, sizeof(min1));
         pid_t pid = fork();
         fprintf(out1, "hi, i\'m process %d and my parent is %d\n", getpid(), getppid());
-
-        
         
                 if(pid == 0){
                     int max1 = max(num,len);

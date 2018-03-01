@@ -8,9 +8,9 @@
 int main(){
 		srand(time(NULL));   // should only be called once
 	int randomNumber;
-	int fileSize = 1000;
+	int fileSize = 1000000;
 
-	FILE *output = fopen("inputRandom1000.txt", "w+");
+	FILE *output = fopen("inputRandom1000000.txt", "w+");
 
 	for (int i = 0; i < fileSize; ++i)
 	{
