@@ -72,7 +72,7 @@ int main(int argc, char *argv[]){
         return 1;
     }
     
-    print_array(num, len);
+    //print_array(num, len);
     printf("Output file generated for problem 0 part a.\n");
     
     startTime = clock();
@@ -81,11 +81,10 @@ int main(int argc, char *argv[]){
     fprintf(out,"Max=%d\n", max(num, len)); // pass array and len
     fprintf(out,"Min=%d\n", min(num, len));
     fprintf(out,"Sum=%d\n", sum(num, len));
-    
     fclose(out);
     endTime = clock();
-    elapsedTime = ((endTime - startTime)); //gives the number of ticks
-    printf("%f\n", elapsedTime);
+    elapsedTime = ((endTime - startTime));  //gives the number of ticks
+    printf("Runtime: %0.3fms\n", elapsedTime/1000);     //given in ms
     
     FILE *out1 = fopen("Output_problem0_part_b.txt", "w+");
     
