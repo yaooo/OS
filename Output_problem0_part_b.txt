@@ -1,6 +1,0 @@
-hi, i'm process 22656 and my parent is 22655
-hi, i'm process 22655 and my parent is 22654
-hi, i'm process 22654 and my parent is 19922
-Max=999
-Min=0
-Sum=499740592
