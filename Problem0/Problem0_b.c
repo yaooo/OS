@@ -7,7 +7,6 @@
 
 
 int num[1000000];
-char *name = "inputRandom1000000.txt";   //we can change this so that it copys the file name of the generated file
 int len = 0;
 clock_t startTime;
 double elapsedTime;
@@ -50,8 +49,17 @@ int sum(int *z, int len) {
     return sumtemp;
 }
 int main(int argc, char *argv[]){
-    if(access(name, F_OK ) != -1){      //check if the file exists
-        FILE *fp = fopen(name,"r");
+
+    if(argc != 3){
+        printf("Error. Please follow the instruction of executing this program in ReadMe.\n");
+        return 1;
+    }
+
+    char *inputFileName = argv[1];
+    char *OutputFileName = argv[2];
+
+    if(access(inputFileName, F_OK ) != -1){      //check if the file exists
+        FILE *fp = fopen(inputFileName,"r");
         // int len = 0;
         while(1) {
             int goodData = fscanf(fp, "%d", &num[len]);
@@ -74,7 +82,7 @@ int main(int argc, char *argv[]){
     
     startTime = clock();
 
-    FILE *out1 = fopen("Output_problem0_part_b.txt", "w+");
+    FILE *out1 = fopen(OutputFileName, "w+");
     
     int fd1[2];
     int fd2[2];
@@ -112,9 +120,12 @@ int main(int argc, char *argv[]){
 
     }
     fclose(out1);
-    printf("Output file generated for problem 0 part a.\n");
-    elapsedTime = (clock() - startTime)/1000;
-    printf("Total time: %0.3fms from Problem 0 part a.\n", elapsedTime);
+    printf("Output file is generated for problem 0 part b.\n");
+
+    elapsedTime = (clock() - startTime);
+    printf("Total time: %0.3f ticks from Problem 0 part b.(1 tick = 1/1000000s)\n", elapsedTime);
+    
+
     return 0;
 }
 

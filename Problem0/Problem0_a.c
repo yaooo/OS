@@ -50,13 +50,17 @@ int sum(int *z, int len) {
 }
 int
  main(int argc, char *argv[]){
-    char *ip1 = argv[1]; //input = 10 numbers
-    char *ip2 = argv[2]; //input = 100 numbers
-    char *ip3 = argv[3]; //input = 1000 numbers
-    char *ip4 = argv[4]; //input = 10000 numbers
-    char *ip5 = argv[5]; //input = 100000 numbers
-    if(access(ip1, F_OK ) != -1){      //check if the file exists
-        FILE *fp = fopen(ip1,"r");
+
+    if(argc != 3){
+        printf("Error. Please follow the instruction of executing this program in ReadMe.\n");
+        return 1;
+    }
+
+    char *inputFileName = argv[1];
+    char *OutputFileName = argv[2];
+    
+    if(access(inputFileName, F_OK ) != -1){      //check if the file exists
+        FILE *fp = fopen(inputFileName,"r");
         // int len = 0;
         while(1) {
             int goodData = fscanf(fp, "%d", &num[len]);
@@ -76,19 +80,19 @@ int
         printf("error\n");
         return 1;
     }
-    
-    printf("Output file generated for problem 0 part a.\n");
-    
+        
     startTime = clock();
-    FILE *out = fopen("Output_problem0_part_a.txt", "w+");
+    FILE *out = fopen(OutputFileName, "w+");
     fprintf(out, "hi, i\'m process %d and my parent is %d\n", getpid(), getppid());
     fprintf(out,"Max=%d\n", max(num, len)); // pass array and len
     fprintf(out,"Min=%d\n", min(num, len));
     fprintf(out,"Sum=%d\n", sum(num, len));
     
     fclose(out);
-    elapsedTime = (clock() - startTime)/1000;
-    printf("Total time: %0.3fms from Problem 0 part a.\n", elapsedTime);
+    printf("Output file generated for problem 0 part a.\n");
+
+    elapsedTime = (clock() - startTime);
+    printf("Total time: %0.3f ticks from Problem 0 part a.(1 tick = 1/1000000s)\n", elapsedTime);
     
 
     return 0;
