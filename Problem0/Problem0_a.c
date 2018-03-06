@@ -89,7 +89,7 @@ int
     fprintf(out,"Sum=%d\n", sum(num, len));
     
     fclose(out);
-    printf("Output file generated for problem 0 part a.\n");
+    printf("Output file is generated for problem 0 part a.\n");
 
     elapsedTime = (clock() - startTime);
     printf("Total time: %0.3f ticks from Problem 0 part a.(1 tick = 1/1000000s)\n", elapsedTime);

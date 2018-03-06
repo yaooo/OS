@@ -1,5 +1,15 @@
-tree: tree.c
-	gcc -g -Wall tree.c -o tree
+PROGRAMS = Problem2
+
+CC = gcc
+CFLAGS = -Wall
+
+%: %.c %.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+.PHONY: all clean
+
+all: $(PROGRAMS)
 
 clean:
-	rm -f tree
+	@rm -f *.o $(PROGRAMS)
+

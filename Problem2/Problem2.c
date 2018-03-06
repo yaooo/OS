@@ -100,7 +100,7 @@ void print_tree(struct tree_node *root)
 
     printf("%s %d", root->name, root->children_no);
     for (i = 0; i < root->children_no; i++) {
-        printfprint_tree(" %s", root->children[i]->name);
+        printf(" %s", root->children[i]->name);
     }
     printf("\n");
     for (i = 0; i < root->children_no; i++) {
