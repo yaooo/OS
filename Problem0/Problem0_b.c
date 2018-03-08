@@ -6,7 +6,7 @@
 #include <time.h>
 
 
-int num[1000000];
+int num[100000];
 int len = 0;
 clock_t startTime;
 double elapsedTime;
