@@ -27,42 +27,48 @@ int main(int argc, char const *argv[])
         pid_t pid = fork();
         sleep(3);
         if(pid == 0){		//child of B(D)
+	        printf("I am process D -> PID: %d, ParentPID: %d\n", getpid(), getppid());   
+	        printf("D Sleeping now.\n");     	
+            sleep(5);
+            printf("Process D waiting now.\n");
 	        wait(&status);
-	        printf("I am process D -> PID: %d, ParentPID: %d\n D Sleeping now.\n", getpid(), getppid());        	
-            sleep(10);
-            explain_wait_status(pid, 12);
+            explain_wait_status(getpid(), 12);
             exit(12);
         }
         else{				//first child of A(B)
-        	pid_t pid = getpid();
-        	printf("I am process B -> PID: %d, ParentPID: %d\n B Sleeping now.\n", getpid(), getppid());
-            sleep(10);
+        	// pid_t pid = getpid();
+        	printf("I am process B -> PID: %d, ParentPID: %d\n", getpid(), getppid());
+        	printf("B Sleeping now.\n");
+            sleep(5);
+            printf("Process B waiting now.\n");
             wait(&status);
-            explain_wait_status(pid, 9);
+            explain_wait_status(getpid(), 9);
             exit(9);
         }
 
     }
     else{                   
         if(fork() == 0){    //second child of A(C)
-        	pid_t pid = getpid();
-            printf("I am process C -> PID: %d, ParentPID: %d\n  C Sleeping now.\n", getpid(), getppid());
+        	// pid_t pid = getpid();
+            printf("I am process C -> PID: %d, ParentPID: %d\n", getpid(), getppid());
+            printf("C Sleeping now.\n");
         	sleep(10);
+        	printf("Process C waiting now.\n");
         	wait(&status);
-            explain_wait_status(pid, 8);
+            explain_wait_status(getpid(), 8);
         	exit(8);
         	
         }
-        else{				//NODE A
-        	pid_t pid = getpid();
-        	printf("I am process A -> PID: %d, ParentPID: %d\n A Sleeping now.\n", getpid(), getppid());
+        else{				//parent node A
+        	// pid_t pid = getpid();
+        	printf("I am process A -> PID: %d, ParentPID: %d\n", getpid(), getppid());
+        	printf("A Sleeping now.\n");
             sleep(10);
-            
+            printf("Process A waiting now.\n");
             wait(&status);
-            explain_wait_status(pid, 5);
+            explain_wait_status(getpid(), 5);
             exit(5);
         }
     }
-
 	return 0;
 }
