@@ -1,5 +1,8 @@
 # ECE434_Spring2017
 
+Copyright: Yao Shi, Louis Yeung, Wesley Lui, Yufeng Lin
+
+
 To compile the code:
 *There is a MakeFile in each folder that contains different assignments.
 *make: make the executables
