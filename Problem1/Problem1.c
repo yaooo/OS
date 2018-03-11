@@ -36,7 +36,6 @@ int main(int argc, char const *argv[])
             exit(12);
         }
         else{				//first child of A(B)
-        	// pid_t pid = getpid();
         	printf("I am process B -> PID: %d, ParentPID: %d\n", getpid(), getppid());
         	printf("B Sleeping now.\n");
             sleep(5);
@@ -49,7 +48,6 @@ int main(int argc, char const *argv[])
     }
     else{                   
         if(fork() == 0){    //second child of A(C)
-        	// pid_t pid = getpid();
             printf("I am process C -> PID: %d, ParentPID: %d\n", getpid(), getppid());
             printf("C Sleeping now.\n");
         	sleep(10);
@@ -60,7 +58,6 @@ int main(int argc, char const *argv[])
         	
         }
         else{				//parent node A
-        	// pid_t pid = getpid();
         	printf("I am process A -> PID: %d, ParentPID: %d\n", getpid(), getppid());
         	printf("A Sleeping now.\n");
             sleep(10);
