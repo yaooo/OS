@@ -1,0 +1,23 @@
+make clean
+make
+echo "Problem0.a: result for 10, 100, 1k, 10k, 100k:"
+./Problem0_a Input10.txt out_a_10
+./Problem0_a Input100.txt out_a_100
+./Problem0_a Input1k.txt out_a_1k
+./Problem0_a Input10k.txt out_a_10k
+./Problem0_a Input100k.txt out_a_100k
+
+echo "\n\nProblem0.b: result for 10, 100, 1k, 10k, 100k:"
+./Problem0_b Input10.txt out_b_10
+./Problem0_b Input100.txt out_b_100
+./Problem0_b Input1k.txt out_b_1k
+./Problem0_b Input10k.txt out_b_10k
+./Problem0_b Input100k.txt out_b_100k
+
+echo "\n\nProblem0.c: result for 10, 100, 1k, 10k, 100k:"
+./Problem0_c Input10.txt out_c_10
+./Problem0_c Input100.txt out_c_100
+./Problem0_c Input1k.txt out_c_1k
+./Problem0_c Input10k.txt out_c_10k
+./Problem0_c Input100k.txt out_c_100k
+

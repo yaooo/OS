@@ -122,7 +122,7 @@ int main(int argc, char *argv[]){
 
     }
     fclose(out1);
-    printf("Output file is generated for problem 0 part b.\n");
+    //printf("Output file is generated for problem 0 part b.\n");
 
     elapsedTime = (clock() - startTime);
     printf("Total time: %0.3f ticks from Problem 0 part b.(1 tick = 1/1000000s)\n", elapsedTime);

@@ -8,9 +8,9 @@
 int main(int argc, char *argv[]){
 	// srand(time(NULL));   // should only be called once
 	// int randomNumber;
-	int fileSize = atoi(argv[1]);
+	//int fileSize = atoi(argv[1]);
 
-	FILE *output = fopen("input.txt", "w+");
+	FILE *output = fopen("Input100k.txt", "w+");
 
 	// for (int i = 0; i < fileSize; ++i){
 	// 	randomNumber = rand() % 1000;
@@ -22,14 +22,10 @@ int main(int argc, char *argv[]){
 	// 	fprintf(output, "%d\n", randomNumber);
 	// }
 
-	for (int i = 0; i < fileSize; ++i)
+	for (int i = 0; i < 100000; ++i)
 	{
-		if (i == fileSize-1)
-		{
-			fprintf(output, "%d", i);
-			break;
-		}
-		fprintf(output, "%d\n", i);
+		
+		fprintf(output, "%d\n", i%100);
 	}
 	return 0;
 }
