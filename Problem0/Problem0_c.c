@@ -44,8 +44,12 @@ int main(int argc, char* argv[]){
     FILE *output = fopen("out.txt", "w+");
     int count = 0;
     int numbers; //buffer for each line
-    int fd[2];
-    pipe(fd);
+    int fdmin[2];
+    int fdmax[2];
+    int fdsum[2];
+    pipe(fdmin);
+    pipe(fdmax);
+    pipe(fdsum);
 
     while(fscanf(fp, "%d\n", &numbers) != EOF){
         num[count] = numbers;
@@ -60,21 +64,38 @@ int main(int argc, char* argv[]){
     int currentPart = 0;
     int levels = 3;
     int section = count/partitions;
+    
 
-    printf("count, section, partition, %d.%d.%d\n", count, section, partitions); //proof of concept
+    printf("count; section size; partitions...%d;%d;%d\n", count, section, partitions); //proof of concept
 
     for (int i = 0; i < levels; ++i)
     {
-        if (fork() == 0) //creates a random process tree 
+        if (fork() == 0) //creates the randomly generated process tree -- each left child creates 3 additional children until it reaches max
         {
             printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
-            minSect = min(x, currentPart*section, (currentPart+1)*section);
-            maxSect = max(x, currentPart*section, (currentPart+1)*section);
-            sumSect = sum(x, currentPart*section, (currentPart+1)*section);
-
+            int minSect = min(num, currentPart*section, (currentPart+1)*section);
+            int maxSect = max(num, currentPart*section, (currentPart+1)*section);
+            int sumSect = sum(num, currentPart*section, (currentPart+1)*section);
+            currentPart++;
+            write(fdmin[1], &minSect, sizeof(minSect));
+            write(fdmax[1], &maxSect, sizeof(maxSect));
+            write(fdsum[1], &sumSect, sizeof(sumSect));
+        }
+        else{
+          wait(NULL);
+          int min, max, sum,fSum;
+          read(fdmin[0], &min, sizeof(min));
+          read(fdmax[0], &max, sizeof(max));
+          read(fdsum[0], &sum, sizeof(sum));
+          printf("Max = %d\n", getpid(), max);
+          printf("Min = %d\n", getpid(), min);
+          printf("Sum = %d\n", getpid(), sum);
+          fSum += sum;
         }
     }
-
+    // printf("Max = %d\n", max);
+    // printf("Min = %d\n", min);
+    // printf("Sum = %d\n", sum);
     fclose(output);
     elapsedTime = (clock() - startTime);
     printf("Total time: %0.3f ticks from Problem 0 part b.(1 tick = 1/1000000s)\n", elapsedTime);
