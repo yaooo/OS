@@ -68,7 +68,6 @@ int main(int argc, char const *argv[])
             sleep(10);
             printf("Process A waiting now.\n");
             waitpid(b, &status, WUNTRACED);
-            // wait(&status);
             explain_wait_status(getpid(), 5);
             exit(5);
         }
