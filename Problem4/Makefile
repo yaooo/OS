@@ -1,15 +1,16 @@
-PROGRAMS = Problem0_a Problem0_b Problem0_c randomFileMaker Problem1 Problem2 Problem3 Problem4
+#File names
+SRC = $(wildcard *.c)
+OBJ = $(SRC:.c=.o); 
 
-CC = gcc
-CFLAGS = -Wall
+#Target
+problem4.exe: $(OBJ)
+	gcc -o problem4.exe $(OBJ) 
 
-%: %.c %.h
-	$(CC) $(CFLAGS) -o $@ $<
+#Generate object files
+%.o: %.c 
+	gcc -c $< -o $@
 
-.PHONY: all clean
-
-all: $(PROGRAMS)
-
+#Remove generated files
 clean:
-	@rm -f *.o $(PROGRAMS)
-
+	rm -f problem4.exe $(OBJ)
+	rm *.stackdump
