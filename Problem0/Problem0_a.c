@@ -53,6 +53,7 @@ int
 
     if(argc != 3){
         printf("Error. Please follow the instruction of executing this program in ReadMe.\n");
+        printf("Do ./<executable> <inputFileName> <outputFileName>\n");
         return 1;
     }
 
