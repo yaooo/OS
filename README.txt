@@ -21,4 +21,5 @@ Problem 3:
 ./<executable> <inputFileName> 
 
 Problem 4:
-
+./<executable>
+Enter input filename via commandline.
