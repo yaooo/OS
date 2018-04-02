@@ -2,90 +2,89 @@
 #include <stdlib.h> // exit(), EXIT_FAILURE
 #include <pthread.h> // pthread_create(), pthread_exit(), pthread_join()
 
-pthread_t tid[2];
 unsigned int shared_data = 0;
-pthread_mutex_t mutex;
 unsigned int rc;
 int arr[10000];/* array*/
 
-int check = 0;
+static int check = 0;
 
 typedef struct
 {
-        int input;
-        int output[10000];
+    int input;
+    int output[10000];
 } thread_args;
-
-
 
 void* Generate(void *ptr)
 {
-	thread_args *arg = (thread_args *)ptr;
+    thread_args *arg = (thread_args *)ptr;
     size_t i = (size_t)arg->input;
     arg->output[0] = 0;
     arg->output[1] = 1;
 
-    rc = pthread_mutex_lock(&mutex);
 
+    for (size_t x = 2; x < i; x++) {
+        // Have a spin lock to alternate the numbers.
+        while (check == 1);
 
-    for(size_t x=2; x<i; x++){
-    
-    	if(check == 0){
-        	arg->output[x] = arg->output[x-2] + arg->output[x-1];
-        	printf("Generated\n");
-        	check = 1;
+        if (check == 0) {
+            arg->output[x] = arg->output[x - 2] + arg->output[x - 1];
+            //printf("Generated\n");
+            check = 1;
 
         }
-	    
-    }
-    rc = pthread_mutex_unlock(&mutex);
 
+    }
+    pthread_exit(0);
 }
 
 
-void* Print(void* ptr){
-	thread_args *arg = (thread_args *)ptr;
+void* Print(void* ptr) {
+    thread_args *arg = (thread_args *)ptr;
     size_t i = (size_t)arg->input;
 
-    rc = pthread_mutex_lock(&mutex);
+    if (i >= 1)
+        printf("\t%d\n", arr[0]);
+    if (i >= 2)
+        printf("\t%d\n", arr[1]);
 
+    for (size_t x = 2; x < i; x++) {
 
-    for(size_t x=2; x<i; x++){
-    
-    	if(check == 1){
-        	arr[x] = arg->output[x];
-        	printf("Print: %d\n", arr[x]);
-        	check = 0;
-        }else{
-	        rc = pthread_mutex_unlock(&mutex);
-	    }
+        // Have a spin lock to alternate the numbers.
+        while (check == 0);
+
+        if (check == 1) {
+            arr[x] = arg->output[x];
+            printf("\t%d\n", arr[x]);
+            check = 0;
+        }
+
     }
+    pthread_exit(0);
+
 }
 
-int main(int argc, char *argv[]){
-    if (argc < 2){
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
         printf( "Please input a positive integer as the argument.");
         exit(1);
     }
-	arr[0]=0;
-	arr[1]=1;
+    arr[0] = 0;
+    arr[1] = 1;
     int n = atoi(argv[1]);
     thread_args args;
+    args.input = n;
 
-    if( n <= 0){
-        printf( "command line arguent: %s is not a valid positive int\n", argv[1]);
+    if ( n <= 0) {
+        printf( "command line argument: %s is not a valid positive int\n", argv[1]);
         exit(1);
     }
+    pthread_t t0, t1;
 
+    printf("Printing the fabrocini number(s)....\n");
+    pthread_create(&t0, NULL, &Generate, (void*) &args);
+    pthread_create(&t1, NULL, &Print, (void*) &args);
 
-    pthread_create(&tid[0],0,&Generate,(void*) &args);
-    pthread_create(&tid[1],0,&Print,(void*) &args);
-    
-
-    sleep(2);
-
-    pthread_join(tid[0],NULL);
-    pthread_join(tid[1],NULL);
+    pthread_join(t0, NULL);
+    pthread_join(t1, NULL);
     return 0;
 }
-

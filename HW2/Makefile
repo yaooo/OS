@@ -1,4 +1,4 @@
-PROGRAMS = Problem1 Modified_problem1 Problem2
+PROGRAMS = Problem1 Modified_problem1 Problem2 m1
 
 CC = gcc
 CFLAGS = -pthread -lm
