@@ -3,12 +3,21 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <signal.h>
-#include "CycleTimer.h"
+#include <time.h>
+#include <stdbool.h>
+
+static bool lock = true;
+
+bool test_and_set(bool *target) {
+	bool rv = *target;
+	*target = true;
+	return rv;
+}
 
 typedef struct data
 {
 	char name[10];
-	double age;
+	time_t age;
 } data;
 
 int alrmflag = 0;
@@ -26,7 +35,7 @@ void sig_func2(int sig) {
 void func(data *p) {
 	int x;
 	snprintf(p -> name, 10, "%d", (int)pthread_self());
-	p->age = CycleTimer.currentSeconds();
+	p->age = clock();
 	x = (int)(((int)pthread_self() + getpid()) / ((getpid() * (int)test_and_set(&lock))));
 	sleep(50);
 }
