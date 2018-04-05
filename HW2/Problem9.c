@@ -173,25 +173,22 @@ int main(int argc, char const *argv[])
 	//pthread create args: (threadID, attributes: NULL if default, function, function args)
 	for (int i = 0; i < T; ++i){	//for every teacher, child, and parent, create a thread for their function
 		pthread_create(&teacherThreads[i], NULL, (void*)Teacher, NULL);
-		pthread_join(&teacherThreads[i], NULL);
 	}
 	for (int i = 0; i < C; ++i){
 		pthread_create(&childrenThreads[i], NULL, (void*)Child, NULL);
-		pthread_join(&childrenThreads[i], NULL);
 	}
 	for (int i = 0; i < P; ++i){
 		pthread_create(&parentThreads[i], NULL, (void*)Parent, NULL);
+	}
+	for (int i = 0; i < T; ++i){	//for every teacher, child, and parent, create a thread for their function
+		pthread_join(&teacherThreads[i], NULL);
+	}
+	for (int i = 0; i < C; ++i){
+		pthread_join(&childrenThreads[i], NULL);
+	}
+	for (int i = 0; i < P; ++i){
 		pthread_join(&parentThreads[i], NULL);
 	}
-	// for (int i = 0; i < T; ++i){
-	// 	/* code */
-	// }
-	// for (int i = 0; i < C; ++i){
-	// 	/* code */
-	// }
-	// for (int i = 0; i < P; ++i){
-	// 	/* code */
-	// }
 
 	sem_destroy(&semTeacher); sem_destroy(&semChild); sem_destroy(&classroomLockdown);
 
