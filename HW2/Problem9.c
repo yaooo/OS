@@ -34,22 +34,22 @@ void teacher_exit(int ratioMax){
 	sem_getvalue(&semTeacher, &numberOfTeachersNOW);
 	int numberOfChildrenNOW = 0;
 	sem_getvalue(&semChild, &numberOfChildrenNOW);
+	float checkRatio = 0;
 	if (numberOfTeachersNOW > 0)
 	{
 		float checkRatio = numberOfChildrenNOW/numberOfTeachersNOW;	//compare this value with R
-		if (checkRatio < ratioMax)	//if true, a teacher can leave
-		{
-			sem_wait(&semTeacher);
-			printf("(%d)Teacher exiting.\n", (int)pthread_self());
-		}else{	//teacher cannot leave office and continues to teach
-			printf("(%d)Teacher wants to leave but cannot. Will try to leave again soon.\n", (int)pthread_self());
-			teach(); //goes back to teaching
-			teacher_exit(ratioMax);
-		}
 	}else if (numberOfChildrenNOW == 0) //no children left, can leave now
 	{
 		sem_wait(&semTeacher);
 		printf("(%d)Teacher exiting.\n", (int)pthread_self());
+	}
+	if (checkRatio < ratioMax){	//if true, a teacher can leave
+		sem_wait(&semTeacher);
+		printf("(%d)Teacher exiting.\n", (int)pthread_self());
+	}else{	//teacher cannot leave office and continues to teach
+		printf("(%d)Teacher wants to leave but cannot. Will try to leave again soon.\n", (int)pthread_self());
+		teach(); //goes back to teaching
+		teacher_exit(ratioMax);
 	}
 	// int sem_wait(&semTeacher);	//opposite of entering, value-- (MUST BE WITHIN REASONAL CONDITIONS!)
 }
@@ -84,17 +84,17 @@ void verify_compliance(int ratioMax){
 	sem_getvalue(&semTeacher, &numberOfTeachersNOW);
 	int numberOfChildrenNOW = 0;
 	sem_getvalue(&semChild, &numberOfChildrenNOW);
+	float checkRatio = 0;
 	if (numberOfTeachersNOW > 0)
 	{
 		float checkRatio = numberOfChildrenNOW/numberOfTeachersNOW;	//compare this value with R
-		if (checkRatio < ratioMax)
-		{
-			sem_wait(&classroomLockdown);
-			printf("(%d)Parent says everything is fine!\n", (int)pthread_self());
-		}else{
-			sem_post(&classroomLockdown);
-			printf("(%d)Parent says regulations are not met!\n", (int)pthread_self());
-		}
+	}
+	if (checkRatio < ratioMax){
+		sem_wait(&classroomLockdown);
+		printf("(%d)Parent says everything is fine!\n", (int)pthread_self());
+	}else{
+		sem_post(&classroomLockdown);
+		printf("(%d)Parent says regulations are not met!\n", (int)pthread_self());
 	}
 
 }
@@ -116,7 +116,7 @@ void Teacher(){
 	{
 		teacher_enter();
 		//critical section
-		printf("Teacher in critical section\n");
+		// printf("(%d)Teacher in critical section\n", (int)pthread_self());
 		teach();
 		teacher_exit(ratio);
 		go_home();
@@ -128,7 +128,7 @@ void Child(){
 	{
 		child_enter();
 		//critical section
-		printf("Child in critical section\n");
+		// printf("(%d)Child in critical section\n", (int)pthread_self());
 		learn();
 		child_exit();
 		go_home();
@@ -140,7 +140,7 @@ void Parent(){
 	{
 		parent_enter();
 		//critical section
-		printf("Parent in critical section\n");
+		// printf("(%d)Parent in critical section\n", (int)pthread_self());
 		verify_compliance(ratio);
 		parent_exit();
 		go_home();
@@ -171,19 +171,27 @@ int main(int argc, char const *argv[])
 	sem_init(&classroomLockdown, 0, 1);
 	
 	//pthread create args: (threadID, attributes: NULL if default, function, function args)
-	for (int i = 0; i < T; ++i)	//for every teacher, child, and parent, create a thread for their function
-	{
+	for (int i = 0; i < T; ++i){	//for every teacher, child, and parent, create a thread for their function
 		pthread_create(&teacherThreads[i], NULL, (void*)Teacher, NULL);
+		pthread_join(&teacherThreads[i], NULL);
 	}
-	for (int i = 0; i < C; ++i)
-	{
+	for (int i = 0; i < C; ++i){
 		pthread_create(&childrenThreads[i], NULL, (void*)Child, NULL);
+		pthread_join(&childrenThreads[i], NULL);
 	}
-	for (int i = 0; i < P; ++i)
-	{
+	for (int i = 0; i < P; ++i){
 		pthread_create(&parentThreads[i], NULL, (void*)Parent, NULL);
+		pthread_join(&parentThreads[i], NULL);
 	}
-
+	// for (int i = 0; i < T; ++i){
+	// 	/* code */
+	// }
+	// for (int i = 0; i < C; ++i){
+	// 	/* code */
+	// }
+	// for (int i = 0; i < P; ++i){
+	// 	/* code */
+	// }
 
 	sem_destroy(&semTeacher); sem_destroy(&semChild); sem_destroy(&classroomLockdown);
 
