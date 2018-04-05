@@ -159,7 +159,7 @@ int main(int argc, char const *argv[])
 	int T = atoi(argv[2]);	//teachers
 	int C = atoi(argv[3]);	//children
 	int P = atoi(argv[4]);	//parents
-	printf("%d %d %d %d \n", (R, T, C, P));
+
 	pthread_t teacherThreads[T];	//initializing threads to be created (these will be for thread ID)
 	pthread_t childrenThreads[C];
 	pthread_t parentThreads[P];
