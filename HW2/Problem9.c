@@ -154,11 +154,11 @@ int main(int argc, char const *argv[])
 		printf("Error. Please follow format: R, # Teachers, # Children, # Parents\n");
 		return 1;
 	}
-	int R = atoi(argv[0]);	//max number of children assigned to one teacher
+	int R = atoi(argv[1]);	//max number of children assigned to one teacher
 	ratio += R; 			//change global variable value
-	int T = atoi(argv[1]);	//teachers
-	int C = atoi(argv[2]);	//children
-	int P = atoi(argv[3]);	//parents
+	int T = atoi(argv[2]);	//teachers
+	int C = atoi(argv[3]);	//children
+	int P = atoi(argv[4]);	//parents
 	printf("%d %d %d %d \n", (R, T, C, P));
 	pthread_t teacherThreads[T];	//initializing threads to be created (these will be for thread ID)
 	pthread_t childrenThreads[C];
