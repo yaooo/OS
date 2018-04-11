@@ -3,6 +3,9 @@ sem_t access;	//binary semaphore - only allows access to either the employee or 
 int N; //N = number of <employees>
 sem_t keychain;	//initialize keychain value to the number of employees (N)
 
+sem_init(&access, 0, 1);
+sem_init(&keychain, 0, N);
+
 //wait: to check if worker can go into the office space (increment semaphore count if successful)
 //signal: open up a space in office (decrement semaphore count if successful)
 

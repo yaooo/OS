@@ -2,6 +2,7 @@ sem_t access;
 
 //wait: to check if worker can go into the office space (increment semaphore value if successful)
 //signal: open up a space in office (decrement semaphore value if successful)
+sem_init(&access, 0, 1);
 
 void employee(){
 	while(true){

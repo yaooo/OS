@@ -5,6 +5,10 @@ sem_t keychainEmployee;	//initialize keychain value to the number of employees (
 int M; //M = number of <employees>
 sem_t keychainCleaner;	//initialize keychain value to the number of employees (N)
 
+sem_init(&access, 0, 1);
+sem_init(&keychainEmployee, 0, N);
+sem_init(&keychainCleaner, 0, M);
+
 //wait: to check if worker can go into the office space (increment semaphore count if successful)
 //signal: open up a space in office (decrement semaphore count if successful)
 
