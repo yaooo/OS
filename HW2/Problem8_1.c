@@ -1,3 +1,9 @@
+#include <stdio.h> // printf(), perror()
+#include <stdlib.h> // exit(), EXIT_FAILURE
+#include <pthread.h> // pthread_create(), pthread_exit(), pthread_join()
+#include <unistd.h>  // for sleep
+#include <semaphore.h> // sem_t semaphore type
+
 sem_t access;
 
 //wait: to check if worker can go into the office space (increment semaphore value if successful)
@@ -26,3 +32,14 @@ void cleaner(){
 	}
 }
 
+void main(int argc, char const *argv[])
+{
+	sem_init(&access, 0, 1);
+	pthread_create(&access, NULL, (void*)employee, NULL);
+	pthread_create(&access, NULL, (void*)cleaner, NULL);
+
+	pthread_join(&access, NULL)
+
+	sem_destroy(&access);	
+	return 0;
+}

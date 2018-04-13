@@ -1,3 +1,9 @@
+#include <stdio.h> // printf(), perror()
+#include <stdlib.h> // exit(), EXIT_FAILURE
+#include <pthread.h> // pthread_create(), pthread_exit(), pthread_join()
+#include <unistd.h>  // for sleep
+#include <semaphore.h> // sem_t semaphore type
+
 sem_t access;	//binary semaphore - only allows access to either the employee or the cleaner (mutex condidtion)
 
 int N; //N = number of <employees>
@@ -34,4 +40,19 @@ void cleaner(){
 	}
 }
 
-
+void main(int argc, char const *argv[])
+{
+	sem_init(&access, 0, 1);
+	sem_init(&keychain, 0, N);
+	pthread_t employeeThreads[N];
+	for (int i = 0; i < N; ++i){
+		pthread_create(&employeeThreads[i], NULL, (void*)employee, NULL)
+	}
+	for (int i = 0; i < N; ++i){
+		pthread_join(&employeeThreads[i], NULL)
+	}
+	sem_destroy(&access);
+	sem_destroy(&keychain);
+	
+	return 0;
+}
