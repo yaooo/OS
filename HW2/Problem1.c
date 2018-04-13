@@ -1,17 +1,17 @@
-#include <stdio.h> // printf(), perror()
-#include <stdlib.h> // exit(), EXIT_FAILURE
-#include <pthread.h> // pthread_create(), pthread_exit(), pthread_join()
+#include <stdio.h> 
+#include <stdlib.h>
+#include <pthread.h> 
 
-int arr[10000];/* array*/
-
+long long arr[10000];
 typedef struct
 {
-    int input;
-    int output[10000];
+    long long input;
+    long long output[10000];
 } thread_args;
 
-
-void *thread_func ( void *ptr )/*child thread */
+/*child thread */
+// Thread function used to generate the number
+void *thread_func ( void *ptr )
 {
     thread_args *arg = (thread_args *)ptr;
     size_t i = (size_t)arg->input;
@@ -23,10 +23,12 @@ void *thread_func ( void *ptr )/*child thread */
         arg->output[x] = arg->output[x - 2] + arg->output[x - 1];
     }
     pthread_exit(0);
-} // end function: thread_func
+}
 
 
 int main(int argc, char *argv[]) {
+    
+    // Read the input
     if (argc < 2) {
         printf( "Please input a positive integer as the argument.");
         exit(1);
@@ -47,19 +49,20 @@ int main(int argc, char *argv[]) {
     args.input = n;
 
     status = pthread_create(&thread, NULL, thread_func, (void*) &args );
-    if ( status )
-    {   // then error occurred
+    if ( status ){
         perror( "phread_create failed to create thread" );
         exit(1);
     }
 
     pthread_join(thread, NULL);
-    printf("Fibonacci number:\n");/*print all numbers*/
-    for (i = 0; i < n; i++)
-    {
+    
+
+    /*parent thread(main thread): print the numbers generated */
+
+    printf("Fibonacci number(s):\n");/*print all numbers*/
+    for (i = 0; i < n; i++){
         arr[i] = args.output[i]; /* get the result*/
-        printf("%d\t", arr[i]);/*print all numbers*/
+        printf("  %lld\n", arr[i]);/*print all numbers*/
     }
-    printf("\n");
     return 0;
 }

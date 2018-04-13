@@ -14,8 +14,7 @@ bool test_and_set(bool *target) {
 	return rv;
 }
 
-typedef struct data
-{
+typedef struct data {
 	char name[10];
 	time_t age;
 } data;
@@ -49,11 +48,12 @@ int main() {
 
 	signal(SIGINT, SIG_IGN);
 	pthread_create(&tid1, &attr, (void*) func, ptr);
+
 	signal(SIGSEGV, sig_func);
 	signal(SIGSTOP, sig_func);
 	pthread_create(&tid2, &attr, (void*) func, ptr);
 
-	signal(SIGFPE, sig_func);	
+	signal(SIGFPE, sig_func);
 	signal(SIGALRM, sig_func2);
 	signal(SIGINT, sig_func2);
 	pthread_create(&tid3, &attr, (void*) func, ptr);
@@ -64,12 +64,15 @@ int main() {
 	sleep(5);
 	pthread_kill(tid2, SIGSTOP);
 	alarm(3);
-	while(!alrmflag) pause();
+
+	while (!alrmflag)
+		pause();
+
 	pthread_kill(tid1, SIGINT);
 	pthread_kill(tid3, SIGINT);
 	sleep(40);
+
 	pthread_join(tid1, NULL);
 	pthread_join(tid2, NULL);
 	pthread_join(tid3, NULL);
-
 }

@@ -4,16 +4,19 @@
 
 unsigned int shared_data = 0;
 unsigned int rc;
-int arr[10000];/* array*/
+long long arr[10000];/* array*/
 
 static int check = 0;
 
+// Store the input and output
 typedef struct
 {
     int input;
-    int output[10000];
+    long long output[10000];
 } thread_args;
 
+
+// thread function used to generate the numbers
 void* Generate(void *ptr)
 {
     thread_args *arg = (thread_args *)ptr;
@@ -23,6 +26,7 @@ void* Generate(void *ptr)
 
 
     for (size_t x = 2; x < i; x++) {
+        
         // Have a spin lock to alternate the numbers.
         while (check == 1);
 
@@ -38,14 +42,15 @@ void* Generate(void *ptr)
 }
 
 
+// Thread function used to print out the generated numbers
 void* Print(void* ptr) {
     thread_args *arg = (thread_args *)ptr;
     size_t i = (size_t)arg->input;
 
     if (i >= 1)
-        printf("\t%d\n", arr[0]);
+        printf("  %lld\n", arr[0]);
     if (i >= 2)
-        printf("\t%d\n", arr[1]);
+        printf("  %lld\n", arr[1]);
 
     for (size_t x = 2; x < i; x++) {
 
@@ -54,7 +59,7 @@ void* Print(void* ptr) {
 
         if (check == 1) {
             arr[x] = arg->output[x];
-            printf("\t%d\n", arr[x]);
+            printf("  %lld\n", arr[x]);
             check = 0;
         }
 
@@ -64,8 +69,10 @@ void* Print(void* ptr) {
 }
 
 int main(int argc, char *argv[]) {
+    
+    // Read the input
     if (argc < 2) {
-        printf( "Please input a positive integer as the argument.");
+        printf( "Please input a positive integer as the argument.\n");
         exit(1);
     }
     arr[0] = 0;
@@ -78,6 +85,8 @@ int main(int argc, char *argv[]) {
         printf( "command line argument: %s is not a valid positive int\n", argv[1]);
         exit(1);
     }
+
+
     pthread_t t0, t1;
 
     printf("Printing the fabrocini number(s)....\n");
