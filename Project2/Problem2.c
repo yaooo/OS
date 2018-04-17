@@ -6,11 +6,11 @@
 #include <time.h>
 #include <stdbool.h>
 
-static bool lock = true;
+static	int pid, lock = 0;
 
-bool test_and_set(bool *target) {
-	bool rv = *target;
-	*target = true;
+int test_and_set(int *target) {
+	int rv = *target;
+	*target = 1;
 	return rv;
 }
 
@@ -22,12 +22,12 @@ typedef struct data {
 int alrmflag = 0;
 
 void sig_func(int sig) {
-	write(1, "Caught signal no = %d\n", sig);
+	write(1,"Caught signal no = %d\n", sig);
 	signal(sig, sig_func);
 }
 
 void sig_func2(int sig) {
-	write(1, "Caught signal no = %d\n", sig);
+	write(1,"Caught signal no = %d\n", sig);
 	alrmflag = 1;
 }
 
@@ -44,19 +44,18 @@ int main() {
 	pthread_attr_t attr;
 	data d;
 	data *ptr = &d;
-	int pid, lock = 0;
 
 	signal(SIGINT, SIG_IGN);
-	pthread_create(&tid1, &attr, (void*) func, ptr);
+	pthread_create(&tid1, NULL, (void*) func, ptr);
 
 	signal(SIGSEGV, sig_func);
 	signal(SIGSTOP, sig_func);
-	pthread_create(&tid2, &attr, (void*) func, ptr);
+	pthread_create(&tid2, NULL, (void*) func, ptr);
 
 	signal(SIGFPE, sig_func);
 	signal(SIGALRM, sig_func2);
 	signal(SIGINT, sig_func2);
-	pthread_create(&tid3, &attr, (void*) func, ptr);
+	pthread_create(&tid3, NULL, (void*) func, ptr);
 
 	pid = getpid();
 	sleep(10);
