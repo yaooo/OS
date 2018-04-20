@@ -1,0 +1,14 @@
+Type "make" for more instructions for part 3 of this problem.
+
+We can build in two ways (each of these will build mtsort.c):
+	make ult - Build mtsort with your ULT implementation.
+	make system - Build the mtsort using the system pthreads implementation.
+
+
+To run the test file after making the file:
+	
+	If you choose to build using ULT, please run the following code:
+		./mtsort-ult
+
+	If you choose to build using system, please run the following code:
+		./mtsort-system

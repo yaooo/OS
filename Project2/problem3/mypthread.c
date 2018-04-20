@@ -38,6 +38,8 @@ void add_to_list(mypthread_t* threadname) {
 	t->ptr = threadname;
 }
 
+
+// find thread by its id
 mypthread_t* find_thread(int id) {
 	struct threadNode* tmp = head;
 	// check the circular linked list

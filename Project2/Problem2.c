@@ -42,20 +42,21 @@ void func(data *p) {
 int main() {
 	pthread_t tid1, tid2, tid3;
 	pthread_attr_t attr;
+	pthread_attr_init(&attr);
 	data d;
 	data *ptr = &d;
 
 	signal(SIGINT, SIG_IGN);
-	pthread_create(&tid1, NULL, (void*) func, ptr);
+	pthread_create(&tid1, &attr, (void*) func, ptr);
 
 	signal(SIGSEGV, sig_func);
 	signal(SIGSTOP, sig_func);
-	pthread_create(&tid2, NULL, (void*) func, ptr);
+	pthread_create(&tid2, &attr, (void*) func, ptr);
 
 	signal(SIGFPE, sig_func);
 	signal(SIGALRM, sig_func2);
 	signal(SIGINT, sig_func2);
-	pthread_create(&tid3, NULL, (void*) func, ptr);
+	pthread_create(&tid3, &attr, (void*) func, ptr);
 
 	pid = getpid();
 	sleep(10);
