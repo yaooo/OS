@@ -1,6 +1,3 @@
-//mypthread.c
-//Christina Segerholm cms549
-//Athira Haridas ah671
 #ifndef H_MYPTHREAD
 #define H_MYPTHREAD
 
@@ -15,8 +12,12 @@ typedef struct{
     //Thread ID
     short tid;
     //Pointer to thread node 
-    struct threadNode * mynode;
+    ucontext_t *ucp;//context pointer
+    // active =0 blocked=1 dead =2 for the states
+    int state;
+    int jointid;
 } mypthread_t;
+
 
 typedef struct {
     //Not specified to implement in project instructions but decided to do it anyway.

@@ -1,7 +1,7 @@
 PROGRAMS = Problem2
 
 CC = gcc
-CFLAGS = -pthread -lm
+CFLAGS = -pthread -lm -Wall
 %: %.c %.h
 	$(CC) $(CFLAGS) -o $@ $<
 
@@ -11,4 +11,5 @@ all: $(PROGRAMS)
 
 clean:
 	@rm -f *.o $(PROGRAMS)
+
 
