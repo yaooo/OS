@@ -1,4 +1,4 @@
-PROGRAMS = Problem2
+PROGRAMS = Problem2 mypthread_test
 
 CC = gcc
 CFLAGS = -pthread -lm -Wall

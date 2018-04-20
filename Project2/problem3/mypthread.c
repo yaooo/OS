@@ -15,7 +15,7 @@ struct threadNode* temp; //temp node
 
 struct threadNode* create_node() {
 	struct threadNode* tmp;
-	mypthread_t threadname;
+	//mypthread_t threadname;
 	// initialization
 	tmp = (struct threadNode *) malloc(sizeof(struct threadNode)); 
 	tmp->next = NULL;
@@ -51,7 +51,7 @@ mypthread_t* find_thread(int id) {
 			return (tmp->ptr);//find it
 		tmp = tmp->next;
 	}
-	printf("Thread not found\n", id);
+	printf("Thread not found\n");
 	return NULL;
 }
 
