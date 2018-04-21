@@ -12,7 +12,7 @@
 #define NUMPARTS 4
 #define NUMLEVELS 3
 #define MAXPROCS 1000
-#define SLEEPTIME 10000
+#define SLEEPTIME 30
 
 // modification of Problem 0, part c so that IPC used is via signals
 // we wish to also include the specifications of part b and part c
@@ -30,6 +30,7 @@ int pidList[MAXPROCS]; // list of PIDS: -1 indicates that the process is not in 
 int currProcs=0;
 int end=0;
 int sigRec=-1;
+int option2=0;
 
 // data structure for sending data between processes
 typedef struct statInfo{
@@ -82,6 +83,7 @@ void handlerUpdate(int signum, siginfo_t *si, void *ucontext) {
 // handler function for when user sends a signal to a particular process(es)
 void handlerUser(int signum) {
 	// ctrl- c corresponds to SIGINT
+
 	printf("A signal was caught for process %d, ppid %d. The particular signal value was...\n", getpid(), getppid());
 	sigRec = signum;
 	if (signum == SIGINT) 
@@ -98,6 +100,27 @@ void handlerUser(int signum) {
 		printf("%d, corresponding to SIGTERM\n", signum);	
 	if (signum == SIGKILL)
 		printf("%d, corresponding to SIGKILL\n", signum);	
+	// default action is to be taken
+	if (option2==1) { 
+		sigRec = -1;
+		signal(signum, SIG_DFL);
+		printf("pid %d, ppid %d is doing original action for signal %d\n", getpid(), getppid(), signum);
+		kill(getpid(), signum);
+	}
+	// check for pending signals
+	if (option2 == 3) { 
+		sigset_t pending;
+		sigemptyset(&pending);
+		sigpending(&pending);
+		if (sigismember(&pending, SIGINT))
+			printf("pid %d ppid %d is blocking SIGINT\n", getpid(), getppid());
+		if (sigismember(&pending, SIGQUIT))
+			printf("pid %d ppid %d is blocking SIGQUIT\n", getpid(), getppid());
+		if (sigismember(&pending, SIGTSTP))
+			printf("pid %d ppid %d is blocking SIGTSTP\n", getpid(), getppid());
+	}
+
+	return;
 }
 
 // min, max, sum functions
@@ -221,6 +244,7 @@ int main(int argc, char* argv[]){
     // part c related signal stuff
     // signals: i) SIGINT, ii) SIGQUIT, iii) SIGSTOP, iv) SIGTSTP, v) SIGABRT, vi) SIGTERM, vii) SIGKILL
     struct sigaction userSigs;
+    sigset_t set;
     sigemptyset(&userSigs.sa_mask);
     userSigs.sa_handler = handlerUser;
     // userSigs.sa_flags = 0;
@@ -244,6 +268,24 @@ int main(int argc, char* argv[]){
     int option=0;
     scanf("%d", &option);
     printf("%d entered.\n", option);
+
+    printf("Enter which section of part c) you'd like done (enter 1, 2, or 3)\ni): 1\nii): 2\niii): 3\n");
+    scanf("%d", &option2);
+    printf("%d entered\n");
+    if (option2==1) 
+	printf("i) default handlers used, so signals will take on their default action\n");
+    else if (option2==2) 
+	printf("ii) we will give back information about each signal in this case\n");
+    else if (option2==3) {
+	printf("iii) we have SIGINT, SIGQUIT, and SIGTSTP blocked\n");
+	sigemptyset(&set);
+	sigaddset(&set, SIGINT);
+	sigaddset(&set, SIGQUIT);
+	sigaddset(&set, SIGTSTP);
+	sigprocmask(SIG_BLOCK, &set, NULL);  // so we shouldn't be able to receive these signals more than once at a time
+    }
+    else 
+	printf("invalid option entered; we'll set the option to do the actions of ii).\n");
 
     // determining work done per child process
     while(!comp) {
@@ -394,8 +436,9 @@ int main(int argc, char* argv[]){
 			printf("Note: entering ctrl-c from command line sends SIGINT to all processes in process group\n");
 			// user enters something
 	  		sleep(SLEEPTIME);
-			// printf("Signal with value %d received\n", sigRec);
+			printf("Signal with value %d received\n", sigRec);
 			// wait(NULL);
+			
 			exit(0);
 	  	}
 	  	if (option == 1) {
