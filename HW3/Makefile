@@ -1,4 +1,4 @@
-PROGRAMS = philosopher
+PROGRAMS = philosopher_mutex_cond
 
 CC = gcc
 CFLAGS = -pthread -lm -Wall
