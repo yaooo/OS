@@ -18,7 +18,7 @@ pthread_mutex_t lock;
 // test if the neighbors are available
 void test(int index) {
 	if (!chopsticks_available[index] || !chopsticks_available[(index + 1) % N]) { // if not both chopsticks are available
-		pthread_cond_wait(&cond[index], &lock);    // wait for them to both be available
+		pthread_cond_wait(&cond[index], &lock);    // wait for its neighbors
 		test(index);
 	}
 }
@@ -62,8 +62,9 @@ void *philosopher(void * param) {
 		//puts down the chopsticks
 		chopsticks_available[i] = true;
 		chopsticks_available[(i + 1) % N] = true;
-
-		pthread_cond_signal(&cond[(i + 4) % N]); // signal to neighbors that he's done
+		
+		// signal to neighbors
+		pthread_cond_signal(&cond[(i + 4) % N]);
 		pthread_cond_signal(&cond[(i + 1) % N]);
 
 		//THINKING
@@ -100,7 +101,7 @@ int main() {
 		pthread_create(&tid[i], &attr, philosopher, (void *) &starting_id[i]);
 	}
 
-	// the problem
+	// finish running after the main thread wakes up
 	sleep(runTime);
 
 	for (int i = 0; i < N; i++) {
