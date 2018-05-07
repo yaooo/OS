@@ -83,6 +83,10 @@ void *philosopher(void * param) {
 int main() {
 	pthread_t tid[N];
 	pthread_attr_t attr;
+	printf("\nNote\n**********************************************************************\n");
+	printf("The code is designed to run for 30 seconds with 5 philosophers, as the default setting.\n\n");
+	printf("***********************************************************************\n\n");
+
 
 	pthread_attr_init(&attr);
 
